@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   controller.getGraph(req.params.id)
-    .then(movie => res.json(movie))
+    .then(graph => res.json(graph))
     .catch(err => res.status(500).send(err));
 });
 //#endregion
@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
 
   controller.postGraph(newGraph)
     .then(() => res.json(newGraph))
-    .catch(() => res.status(500).send('No se guardo la peli'));
+    .catch(() => res.status(500).send('No se guardo la grafica'));
 });
 //#endregion
 

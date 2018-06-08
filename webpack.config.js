@@ -1,11 +1,13 @@
 const path = require('path');
+var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   mode: 'production',
   entry: './backend/server.ts',
   target: 'node',
+  externals: [nodeExternals()],
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts']
   },
   module: {
     rules: [
