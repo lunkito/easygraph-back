@@ -5,9 +5,8 @@ module.exports = {
   mode: 'production',
   entry: './backend/server.ts',
   target: 'node',
-  externals: [nodeExternals()],
   resolve: {
-    extensions: ['.ts']
+    extensions: ['.ts', '.js']
   },
   module: {
     rules: [
