@@ -1,0 +1,30 @@
+{
+  "name": "easygraph-back",
+  "version": "1.0.0",
+  "description": "Back-end del proyecto easygraph",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "dev": "webpack-dev-server --mode development"
+  },
+  "keywords": [],
+  "author": "Pablo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongodb": "^3.0.10"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0",
+    "@types/mongodb": "^3.0.19",
+    "@types/node": "^10.3.2",
+    "@types/webpack": "^4.4.0",
+    "ts-loader": "^4.3.1",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.1",
+    "webpack": "^4.11.1",
+    "webpack-cli": "^3.0.3",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
