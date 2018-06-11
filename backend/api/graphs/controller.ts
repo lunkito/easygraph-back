@@ -1,37 +1,26 @@
 import { MongoClient, Server, ObjectID } from 'mongodb';
+import { user } from './model';
 
-const MONGO_URL = process.env.MONGO_URL_PROD || 'mongodb://localhost:27017';
+const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017';
 
-export function getGraphs() {
+export function getUserByEmail(userEmail) {
   return new Promise((resolve, reject) => {
-    MongoClient.connect(MONGO_URL, (err, client) => {
-      if (!err) {
-        const db = client.db('easygraph');
-        const graphsCollection = db.collection('graphs');
-
-        graphsCollection.find({}).limit(20).toArray()
-        .then(graphs => {
-          resolve(graphs);
-        })
-        .catch(errorQuery => reject(errorQuery));
-      } else {
-        reject(err);
-      }
-    });
+    user.find({ email: { $in: [`${userEmail}`] }})
+      .then(result => resolve(result));
   });
 }
 
 
-export function getGraph(graphId: number) {
+export function getGraph(userId: number) {
   return new Promise((resolve, reject) => {
     MongoClient.connect(MONGO_URL, (err, client) => {
       if (!err) {
         const db = client.db('easygraph');
-        const graphsCollection = db.collection('graphs');
+        const usersCollection = db.collection('users');
 
-        graphsCollection.findOne({ _id: new ObjectID(graphId)})
-        .then(graph => resolve(graph))
-        .catch(errorFind => reject(errorFind));
+        usersCollection.findOne({ userId: new ObjectID(userId)})
+          .then(graph => resolve(graph))
+          .catch(errorFind => reject(errorFind));
       } else {
         reject(err);
       }
@@ -48,8 +37,8 @@ export function postGraph(newGraph) {
         const graphsCollection = db.collection('graphs');
 
         graphsCollection.insertOne(graphToInsert)
-        .then(() => resolve(graphToInsert))
-        .catch(errorInsert => reject(errorInsert));
+          .then(() => resolve(graphToInsert))
+          .catch(errorInsert => reject(errorInsert));
       } else {
         reject(err);
       }

@@ -4,17 +4,17 @@ import * as controller from './controller';
 export const router = express.Router();
 
 //#region GET --------------------------------
-router.get('/', (req, res) => {
-  controller.getGraphs()
+router.get('/:userEmail', (req, res) => {
+  controller.getUserByEmail(req.params.userEmail)
     .then(graphs => res.json(graphs))
     .catch(err => res.status(500).send(err));
 });
 
-router.get('/:id', (req, res) => {
-  controller.getGraph(req.params.id)
-    .then(graph => res.json(graph))
-    .catch(err => res.status(500).send(err));
-});
+// router.get('/:userId', (req, res) => {
+//   controller.getGraph(req.params.userId)
+//     .then(graph => res.json(graph))
+//     .catch(err => res.status(500).send(err));
+// });
 //#endregion
 
 //#region POST -------------------------------
