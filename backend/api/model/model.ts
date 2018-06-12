@@ -1,25 +1,31 @@
 import { Schema, Document, Model, model } from 'mongoose';
 
 export interface IGraph {
-  name: String;
-  description: String;
-  data: [Object];
+  id: any;
+  name?: String;
+  description?: String;
+  data: any[];
 }
 
 export interface IUser extends Document {
-  name?: string;
+  _id: any;
+  userName: string;
   email: string;
-  graphs?: [IGraph];
+  graphs?: IGraph[];
   created?: Date;
   updated?: Date;
 }
 
+export interface IDisplayUser {
+  fullName: String;
+} 
+
 const UserSchema: Schema = new Schema({
-  name: { type: String, required: false },
+  userName: { type: String, required: true },
   email: { type: String, required: true },
   graphs: { type: [], required: false },
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now },
 });
 
-export const User: Model<IUser> = model<IUser>('users', UserSchema);
+export const Users: Model<IUser> = model<IUser>('users', UserSchema);
