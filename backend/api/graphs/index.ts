@@ -4,12 +4,24 @@ import * as controller from './controller';
 export const router = express.Router();
 
 //#region GET --------------------------------
-router.get('/:userEmail', (req, res) => {
-  controller.getUserByEmail(req.params.userEmail)
-    .then(graphs => res.json(graphs))
+router.get('/insert/:newEmail', (req, res) => {
+  controller.insertUser(req.params.newEmail)
+    .then(user => res.json(user))
     .catch(err => res.status(500).send(err));
 });
 
+router.get('/:userEmail', (req, res) => {
+  console.log('Parametro: ', req.params.userEmail);
+  controller.getUserByEmail(req.params.userEmail)
+    .then(user => res.json(user))
+    .catch(err => res.status(500).send(err));
+});
+
+router.get('/', (req, res) => {
+  controller.getAllUsers()
+    .then(users => res.json(users))
+    .catch(err => res.status(500).send(err));
+});
 // router.get('/:userId', (req, res) => {
 //   controller.getGraph(req.params.userId)
 //     .then(graph => res.json(graph))

@@ -1,15 +1,36 @@
 import { MongoClient, Server, ObjectID } from 'mongodb';
-import { user } from './model';
+import { User } from './model';
 
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017';
 
 export function getUserByEmail(userEmail) {
-  return new Promise((resolve, reject) => {
-    user.find({ email: { $in: [`${userEmail}`] }})
-      .then(result => resolve(result));
-  });
+  // return User.find({ email: { $in: [`${userEmail}`] }});
+  return User.findOne({ email: userEmail });
 }
 
+
+export function getAllUsers() {
+  return User.find({});
+}
+
+export function insertUser(newEmail) {
+  const user = new User({
+    name : 'Pablo',
+    email : newEmail,
+    created : new Date(),
+    updated : new Date(),
+    graphs : [
+      {
+        name : 'Graph name',
+        description : 'graph description',
+        data : [ 
+          { asd : 1 }
+        ]
+      }
+    ]
+  });
+  return user.save();
+}
 
 export function getGraph(userId: number) {
   return new Promise((resolve, reject) => {
