@@ -2,7 +2,7 @@ import { Schema, Document, Model, model } from 'mongoose';
 
 export interface IGraph {
   id: any;
-  name?: String;
+  name: String;
   description?: String;
   data: any[];
 }

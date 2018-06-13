@@ -1,8 +1,5 @@
-import { MongoClient, ObjectID } from 'mongodb';
-import { Users, IGraph } from '../model/model';
-
-
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017';
+import { ObjectID } from 'mongodb';
+import { Users } from '../model/model';
 
 export function getGraphs(userName: string) {
   return new Promise((resolve, reject) => {
@@ -17,7 +14,8 @@ export function insertGraph(userName) {
     Users.findOneAndUpdate({userName},
       {$set: {
         graphs: {
-          name : 'Graph name',
+          name : 'LookAtThisGraph',
+          id: new ObjectID(),
           description : 'graph description',
           data : [
             {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
@@ -37,56 +35,55 @@ export function insertGraph(userName) {
     .catch(err => reject(err));
   });
 }
+// export function postGraph(newGraph) {
+//   return new Promise((resolve, reject) => {
+//     const graphToInsert = {...newGraph, created: new Date(), updated: new Date() };
+//     MongoClient.connect(MONGO_URL, (err, client) => {
+//       if (!err) {
+//         const db = client.db('easygraph');
+//         const graphsCollection = db.collection('graphs');
 
-export function postGraph(newGraph) {
+//         graphsCollection.insertOne(graphToInsert)
+//           .then(() => resolve(graphToInsert))
+//           .catch(errorInsert => reject(errorInsert));
+//       } else {
+//         reject(err);
+//       }
+//     });
+//   });
+// }
+
+export function getGraph(userName: string, graphName) {
   return new Promise((resolve, reject) => {
-    const graphToInsert = {...newGraph, created: new Date(), updated: new Date() };
-    MongoClient.connect(MONGO_URL, (err, client) => {
-      if (!err) {
-        const db = client.db('easygraph');
-        const graphsCollection = db.collection('graphs');
-
-        graphsCollection.insertOne(graphToInsert)
-          .then(() => resolve(graphToInsert))
-          .catch(errorInsert => reject(errorInsert));
-      } else {
-        reject(err);
-      }
-    });
+    Users.findOne({ userName })
+      .select({ graphs: 1 })
+      .$where(graph =>  graph.name === graphName)
+      .then(graph => resolve(graph))
+      .catch(err => reject(err));
   });
 }
 
-export function putGraph(graphId: number, graphFromBody) {
-  return new Promise((resolve, reject) => {
-    MongoClient.connect(MONGO_URL, (err, client) => {
-      if (!err) {
-        const db = client.db('easygraph');
-        const graphsCollection = db.collection('graphs');
+export function updateGraph(userName: string, graphName: string, graphFromBody) {
+  const graphToUpdate = { ...graphFromBody};
 
-        const graphToUpdate = { ...graphFromBody, updated: new Date() };
-        const query = { _id: new ObjectID(graphId)};
-        const body = { $set: graphToUpdate };
-        const options = { returnOrigonal: false, upsert: false };
-        graphsCollection.findOneAndUpdate(query, body, options)
-          .then(() => resolve())
-          .catch(updateError => reject(updateError));
-      } else {
-        reject(err);
-      }
-    });
+  return new Promise((resolve, reject) => {
+    Users.findOneAndUpdate(
+      { userName, 'graphs.name': graphName },
+      { $set: { 'graphs.$.data': graphToUpdate.data } },
+      { new: true }
+      )
+      .select({ graphs: 1 })
+      .then(graph => resolve(graph))
+      .catch(err => reject(err));
   });
 }
 
-export function deleteGraph(graphId: number) {
+export function deleteGraph(userName: string, graphName: string) {
   return new Promise((resolve, reject) => {
-    MongoClient.connect(MONGO_URL, (err, client) => {
-      const db = client.db('easygraph');
-      const graphsCollection = db.collection('graphs');
-
-      const query = { _id: new ObjectID(graphId) };
-      graphsCollection.findOneAndDelete(query)
-        .then(() => resolve())
-        .catch((deleteError => reject(deleteError)));
-    });
+    Users.findOneAndRemove(
+      { userName, 'graphs.name': graphName }
+    )
+    .then(graph => resolve(graph))
+    .catch(err => reject(err));
   });
 }

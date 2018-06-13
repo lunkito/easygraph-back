@@ -4,8 +4,8 @@ import * as controller from './controller';
 export const router = express.Router();
 
 //#region GET --------------------------------
-router.get('/:userEmail', (req, res) => {
-  controller.getUserByUserName(req.params.userEmail)
+router.get('/:userName', (req, res) => {
+  controller.getUserByUserName(req.params.userName)
     .then(user => res.json(user))
     .catch(err => res.status(500).send(err));
 });
@@ -19,7 +19,6 @@ router.get('/', (req, res) => {
 
 //#region POST -------------------------------
 router.post('/insert/:userName', (req, res) => {
-  console.log('Parametro userName en req.params ', req.params.userName);
   controller.insertUser(req.params.userName)
     .then(user => res.json(user))
     .catch(err => res.status(500).send(err));
@@ -35,10 +34,8 @@ router.post('/insert/:userName', (req, res) => {
 //     .catch(err => next(err));
 // });
 
-router.put('/', (req, res, next) => {
-  const userId = req.body.id;
-
-  controller.putUser(userId, req.body)
+router.put('/:userName', (req, res, next) => {
+  controller.updateUser(req.params.userName, req.body)
     .then(user => res.send(user))
     .catch(err => next(err));
 });
