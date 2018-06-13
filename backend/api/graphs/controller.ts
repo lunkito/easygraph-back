@@ -6,7 +6,7 @@ const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017';
 
 export function getGraphs(userName: string) {
   return new Promise((resolve, reject) => {
-    Users.findOne({ userName: userName })
+    Users.findOne({ userName })
       .then(selectedUser => resolve(selectedUser.graphs))
       .catch(err => reject(err));
   });
@@ -15,7 +15,7 @@ export function getGraphs(userName: string) {
 export function insertGraph(userName) {
   return new Promise((resolve, reject) => {
     Users.findOneAndUpdate({userName},
-      {$set:{
+      {$set: {
         graphs: {
           name : 'Graph name',
           description : 'graph description',
@@ -35,7 +35,7 @@ export function insertGraph(userName) {
     .select({ graphs: 1 })
     .then(userDocument => resolve(userDocument))
     .catch(err => reject(err));
-  })
+  });
 }
 
 export function postGraph(newGraph) {

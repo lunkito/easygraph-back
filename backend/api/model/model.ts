@@ -18,7 +18,7 @@ export interface IUser extends Document {
 
 export interface IDisplayUser {
   fullName: String;
-} 
+}
 
 const UserSchema: Schema = new Schema({
   userName: { type: String, required: true },
