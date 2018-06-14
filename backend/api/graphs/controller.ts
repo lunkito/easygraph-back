@@ -11,8 +11,10 @@ export function getGraphs(userName: string) {
 
 export function insertGraph(userName) {
   return new Promise((resolve, reject) => {
+    // const graphToInsert = {...newGraph, created: new Date(), updated: new Date() };
+
     Users.findOneAndUpdate({userName},
-      {$set: {
+      {$push: {
         graphs: {
           name : 'LookAtThisGraph',
           id: new ObjectID(),
@@ -28,30 +30,13 @@ export function insertGraph(userName) {
           ]
         }
       }},
-      {new: true}
+      { new: true }
     )
     .select({ graphs: 1 })
     .then(userDocument => resolve(userDocument))
     .catch(err => reject(err));
   });
 }
-// export function postGraph(newGraph) {
-//   return new Promise((resolve, reject) => {
-//     const graphToInsert = {...newGraph, created: new Date(), updated: new Date() };
-//     MongoClient.connect(MONGO_URL, (err, client) => {
-//       if (!err) {
-//         const db = client.db('easygraph');
-//         const graphsCollection = db.collection('graphs');
-
-//         graphsCollection.insertOne(graphToInsert)
-//           .then(() => resolve(graphToInsert))
-//           .catch(errorInsert => reject(errorInsert));
-//       } else {
-//         reject(err);
-//       }
-//     });
-//   });
-// }
 
 export function getGraph(userName: string, graphName) {
   return new Promise((resolve, reject) => {

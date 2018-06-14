@@ -5,6 +5,8 @@ export interface IGraph {
   name: String;
   description?: String;
   data: any[];
+  created: Date;
+  updated: Date;
 }
 
 export interface IUser extends Document {
