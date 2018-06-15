@@ -30,6 +30,13 @@ router.post('/insert/:userName', (req, res) => {
     .catch(err => res.status(500).send(err));
 });
 
+router.post('/login', (req, res) => {
+  console.log('Body', req);
+  controller.addUser(req.body.userName, req.body.password)
+    .then(response => res.json(response))
+    .catch(err => res.status(500).send(err));
+});
+
 
 // PUT --------------------------------
 router.put('/:userName', (req, res, next) => {

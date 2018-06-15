@@ -12,6 +12,7 @@ export interface IGraph {
 export interface IUser extends Document {
   _id: any;
   userName: string;
+  password: string;
   email: string;
   graphs?: IGraph[];
   created?: Date;
@@ -19,11 +20,14 @@ export interface IUser extends Document {
 }
 
 export interface IDisplayUser {
-  fullName: String;
+  userName: String;
+  created?: Date;
+  updated?: Date;
 }
 
 const UserSchema: Schema = new Schema({
   userName: { type: String, required: true },
+  password: { type: String, required: false },
   email: { type: String, required: true },
   graphs: { type: [], required: false },
   created: { type: Date, default: Date.now },

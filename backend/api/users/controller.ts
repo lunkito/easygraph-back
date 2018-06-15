@@ -26,6 +26,18 @@ export function insertUser(userName) {
   return user.save();
 }
 
+export const addUser = (userName, password) => {
+  const user = new Users({
+    userName,
+    password,
+    email : 'correo',
+    created : new Date(),
+    updated : new Date(),
+    graphs : []
+  });
+  return user.save();
+};
+
 export function updateUser(userName: string, userFromBody: IUser) {
   return new Promise((resolve, reject) => {
     Users.findOneAndUpdate(
