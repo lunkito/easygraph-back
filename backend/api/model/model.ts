@@ -15,6 +15,7 @@ export interface IUser extends Document {
   password: string;
   email: string;
   graphs?: IGraph[];
+  token?: string;
   created?: Date;
   updated?: Date;
 }
@@ -30,6 +31,7 @@ const UserSchema: Schema = new Schema({
   password: { type: String, required: false },
   email: { type: String, required: true },
   graphs: { type: [], required: false },
+  token: { type: String, required: false },
   created: { type: Date, default: Date.now },
   updated: { type: Date, default: Date.now },
 });

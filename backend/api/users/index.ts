@@ -1,5 +1,7 @@
 import * as express from 'express';
 import * as controller from './controller';
+import { IUser } from '../model/model';
+import * as session from 'express-session';
 
 export const router = express.Router();
 
@@ -24,13 +26,22 @@ router.get('/', (req, res) => {
 
 
 // POST -------------------------------
-router.post('/insert/:userName', (req, res) => {
-  controller.insertUser(req.params.userName)
-    .then(user => res.json(user))
-    .catch(err => res.status(500).send(err));
+router.post('/login', (req, res) => {
+  console.log('Req.body.password: ', req.body.password);
+  controller.login(req.body)
+    .then((putoUser: IUser) => {
+      // session.
+        // putoUser.save()
+        //   .then(putoUser => {
+        //     console.log('Response de DB', putoUser);
+        //     res.json(putoUser.token);
+        //   })
+        //   .catch(() => 'No se guardo el token en DB');
+     })
+    .catch(err => res.status(404).send(err));
 });
 
-router.post('/login', (req, res) => {
+router.post('/insert', (req, res) => {
   console.log('Body', req);
   controller.addUser(req.body.userName, req.body.password)
     .then(response => res.json(response))

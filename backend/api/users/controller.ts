@@ -1,4 +1,5 @@
 import { Users, IUser } from '../model/model';
+import { ObjectID } from 'mongodb';
 
 export function getUserId(userName) {
   return Users.findOne({ userName })
@@ -15,15 +16,35 @@ export function getAllUsers() {
     .select({ graphs: 0 });
 }
 
-export function insertUser(userName) {
-  const user = new Users({
-    userName,
-    email : 'correo',
-    created : new Date(),
-    updated : new Date(),
-    graphs : []
+export function login(body) {
+  return new Promise((resolve, reject) => {
+    Users.findOne({ userName: body.userName, password: body.password })
+      .then((putoUser) => {
+        if (putoUser !== null) {
+          console.log('Response de DB', putoUser);
+
+          const token = new ObjectID();
+          putoUser.token = token.toHexString();
+          resolve(putoUser);
+          // putoUser.save()
+          //   .then(putoUser => {
+          //     console.log('Response de DB', putoUser);
+          //     res.json(putoUser.token);
+          //   })
+          //   .catch(() => 'No se guardo el token en DB');
+        } else {
+          reject(404);
+        }
   });
-  return user.save();
+    // .then(user => {
+    //   console.log('Usuario ', (user));
+    //   if (user) {
+    //     return true;
+    //   }
+    //   return false;
+    // })
+    // .catch();
+});
 }
 
 export const addUser = (userName, password) => {

@@ -7,7 +7,7 @@ import { connect } from 'mongoose';
 import * as morgan from 'morgan';
 require('dotenv').config();
 
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017';
+const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/easygraph';
 const SECRET = process.env.SECRET || 'asdf';
 const app = express();
 
@@ -17,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 connect(MONGO_URL);
+
 app.use('/graphs', graphsRouter.router);
 app.use('/users', usersRouter.router);
 
