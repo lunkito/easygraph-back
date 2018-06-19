@@ -4,38 +4,38 @@ import * as controller from './controller';
 export const router = express.Router();
 
 // GET --------------------------------
-router.get('/:userName', (req, res) => {
-  controller.getGraphs(req.params.userName)
+router.get('/', (req, res) => {
+  controller.getGraphs(req.body.token)
     .then(graph => res.json(graph))
     .catch(err => res.status(500).send(err));
 });
 
-router.get('/:userName/:graphName', (req, res) => {
-  controller.getGraph(req.params.userName, req.params.graphName)
+router.get('/:graphName', (req, res) => {
+  controller.getGraph(req.body.token, req.params.graphName)
     .then(graph => res.json(graph))
     .catch(err => res.status(500).send(err));
 });
 
 
 // POST --------------------------------
-router.post('/:userName', (req, res) => {
-  controller.insertGraph(req.params.userName)
+router.post('/', (req, res) => {
+  controller.insertGraph(req.body.token)
     .then(graph => res.json(graph))
     .catch(() => res.status(500).send('No se guardo la grafica'));
 });
 
 
 // PUT --------------------------------
-router.put('/:userName/:graphName', (req, res, next) => {
-  controller.updateGraph(req.params.userName, req.params.graphName, req.body)
+router.put('/:graphName', (req, res, next) => {
+  controller.updateGraph(req.body.token, req.params.graphName, req.body)
     .then(graph => res.send(graph))
     .catch(err => next(err));
 });
 
 
 // DELETE ----------------------------
-router.delete('/:userName/:graphName', (req, res) => {
-  controller.deleteGraph(req.params.userName, req.params.graphName)
+router.delete('/:graphName', (req, res) => {
+  controller.deleteGraph(req.body.token, req.params.graphName)
     .then(user => res.send(user))
     .catch(err => res.status(404).send(err));
 });

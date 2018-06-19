@@ -31,13 +31,6 @@ router.post('/login', (req, res) => {
   controller.login(req.body)
     .then((user: IUser) => {
       res.json(user);
-      // session.
-        // putoUser.save()
-        //   .then(putoUser => {
-        //     console.log('Response de DB', putoUser);
-        //     res.json(putoUser.token);
-        //   })
-        //   .catch(() => 'No se guardo el token en DB');
      })
     .catch(err => res.status(404).send(err));
 });

@@ -1,19 +1,19 @@
 import { ObjectID } from 'mongodb';
 import { Users } from '../model/model';
 
-export function getGraphs(userName: string) {
+export function getGraphs(token: string) {
   return new Promise((resolve, reject) => {
-    Users.findOne({ userName })
+    Users.findOne({ token })
       .then(selectedUser => resolve(selectedUser.graphs))
       .catch(err => reject(err));
   });
 }
 
-export function insertGraph(userName) {
+export function insertGraph(token) {
   return new Promise((resolve, reject) => {
     // const graphToInsert = {...newGraph, created: new Date(), updated: new Date() };
 
-    Users.findOneAndUpdate({userName},
+    Users.findOneAndUpdate({token},
       {$push: {
         graphs: {
           name : 'LookAtThisGraph',
@@ -38,9 +38,9 @@ export function insertGraph(userName) {
   });
 }
 
-export function getGraph(userName: string, graphName) {
+export function getGraph(token: string, graphName) {
   return new Promise((resolve, reject) => {
-    Users.findOne({ userName })
+    Users.findOne({ token })
       .select({ graphs: 1 })
       .$where(graph =>  graph.name === graphName)
       .then(graph => resolve(graph))
@@ -48,12 +48,12 @@ export function getGraph(userName: string, graphName) {
   });
 }
 
-export function updateGraph(userName: string, graphName: string, graphFromBody) {
+export function updateGraph(token: string, graphName: string, graphFromBody) {
   const graphToUpdate = { ...graphFromBody};
 
   return new Promise((resolve, reject) => {
     Users.findOneAndUpdate(
-      { userName, 'graphs.name': graphName },
+      { token, 'graphs.name': graphName },
       { $set: { 'graphs.$.data': graphToUpdate.data } },
       { new: true }
       )
@@ -63,10 +63,10 @@ export function updateGraph(userName: string, graphName: string, graphFromBody) 
   });
 }
 
-export function deleteGraph(userName: string, graphName: string) {
+export function deleteGraph(token: string, graphName: string) {
   return new Promise((resolve, reject) => {
     Users.findOneAndRemove(
-      { userName, 'graphs.name': graphName }
+      { token, 'graphs.name': graphName }
     )
     .then(graph => resolve(graph))
     .catch(err => reject(err));
