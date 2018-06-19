@@ -16,35 +16,24 @@ export function getAllUsers() {
     .select({ graphs: 0 });
 }
 
+
+// BIENAVENTURADO SEAS VIAJERO.
+// Aqui podras ver mi primer intento de login de usuario y todas las pifias y cagadas mentales que se me ocurrieron por el camino.
+// Ah y encima la mitad (o más) de lo que hay es copy paste
+// Especial atencion a la hora de generar un token... Con MONGODB!!
 export function login(body) {
   return new Promise((resolve, reject) => {
     Users.findOne({ userName: body.userName, password: body.password })
-      .then((putoUser) => {
-        if (putoUser !== null) {
-          console.log('Response de DB', putoUser);
+      .select({ graphs: 0, password: 0 }) // TODO: Como leñes hacer funcionar la Interfaz y hacer esa cosa... de devolver solo datos especificos
+      .then((user) => {
+        console.log('Response de DB', user);
 
-          const token = new ObjectID();
-          putoUser.token = token.toHexString();
-          resolve(putoUser);
-          // putoUser.save()
-          //   .then(putoUser => {
-          //     console.log('Response de DB', putoUser);
-          //     res.json(putoUser.token);
-          //   })
-          //   .catch(() => 'No se guardo el token en DB');
-        } else {
-          reject(404);
-        }
+        const token = new ObjectID().toHexString();
+        Users.update({ _id: user._id}, { $set: { token }})
+          .then(() => resolve(user))
+          .catch(err => reject(err)); })
+      .catch(err => reject(err));
   });
-    // .then(user => {
-    //   console.log('Usuario ', (user));
-    //   if (user) {
-    //     return true;
-    //   }
-    //   return false;
-    // })
-    // .catch();
-});
 }
 
 export const addUser = (userName, password) => {

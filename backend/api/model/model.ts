@@ -24,6 +24,7 @@ export interface IDisplayUser {
   userName: String;
   created?: Date;
   updated?: Date;
+  token?: string;
 }
 
 const UserSchema: Schema = new Schema({

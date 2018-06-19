@@ -29,7 +29,8 @@ router.get('/', (req, res) => {
 router.post('/login', (req, res) => {
   console.log('Req.body.password: ', req.body.password);
   controller.login(req.body)
-    .then((putoUser: IUser) => {
+    .then((user: IUser) => {
+      res.json(user);
       // session.
         // putoUser.save()
         //   .then(putoUser => {
