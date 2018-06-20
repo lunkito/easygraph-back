@@ -1,4 +1,4 @@
-import { Users, IUser } from '../model/model';
+import { Users, IUser, IDisplayUser } from '../model/model';
 import { ObjectID } from 'mongodb';
 
 export function getUserId(userName) {
@@ -20,17 +20,15 @@ export function getAllUsers() {
 // BIENAVENTURADO SEAS VIAJERO.
 // Aqui podras ver mi primer intento de login de usuario y todas las pifias y cagadas mentales que se me ocurrieron por el camino.
 // Ah y encima la mitad (o más) de lo que hay es copy paste
-// Especial atencion a la hora de generar un token... Con MONGODB!!
+
 export function login(body) {
   return new Promise((resolve, reject) => {
     Users.findOne({ userName: body.userName, password: body.password })
-      .select({ graphs: 0, password: 0 }) // TODO: Como leñes hacer funcionar la Interfaz y hacer esa cosa... de devolver solo datos especificos
       .then((user) => {
-        console.log('Response de DB', user);
-
         const token = new ObjectID().toHexString();
-        Users.update({ _id: user._id}, { $set: { token }})
-          .then(() => resolve(user))
+        Users.findByIdAndUpdate(user._id, {$set: { token }}, { new: true })
+          .select({ graphs: 0, password: 0 })
+          .then((definitivUser) => resolve(definitivUser))
           .catch(err => reject(err)); })
       .catch(err => reject(err));
   });

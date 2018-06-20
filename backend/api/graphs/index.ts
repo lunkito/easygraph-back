@@ -4,8 +4,9 @@ import * as controller from './controller';
 export const router = express.Router();
 
 // GET --------------------------------
-router.get('/', (req, res) => {
-  controller.getGraphs(req.body.token)
+router.get('/:token', (req, res) => {
+  console.log('req', req);
+  controller.getGraphs(req.params.token)
     .then(graph => res.json(graph))
     .catch(err => res.status(500).send(err));
 });

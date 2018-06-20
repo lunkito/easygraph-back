@@ -11,9 +11,9 @@ const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/easygraph'
 const SECRET = process.env.SECRET || 'asdf';
 const app = express();
 
+app.use(cors());
 app.use(morgan('combined'));
 app.use(session({ secret: SECRET }));
-app.use(cors());
 app.use(express.json());
 
 connect(MONGO_URL);

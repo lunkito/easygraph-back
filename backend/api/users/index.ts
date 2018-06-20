@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as controller from './controller';
-import { IUser } from '../model/model';
+import { IUser, IDisplayUser } from '../model/model';
 import * as session from 'express-session';
 
 export const router = express.Router();
@@ -27,9 +27,8 @@ router.get('/', (req, res) => {
 
 // POST -------------------------------
 router.post('/login', (req, res) => {
-  console.log('Req.body.password: ', req.body.password);
   controller.login(req.body)
-    .then((user: IUser) => {
+    .then((user) => {
       res.json(user);
      })
     .catch(err => res.status(404).send(err));
