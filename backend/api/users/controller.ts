@@ -34,6 +34,19 @@ export function login(body) {
   });
 }
 
+export function logout(body) {
+  return new Promise((resolve, reject) => {
+    Users.findOneAndUpdate(
+      { token: body.token },
+      { $set: { token: '' } },
+      { new: true }
+    )
+    .select({ graphs: 0 })
+    .then(user => resolve(user))
+    .catch(err => reject(err));
+  });
+}
+
 export const addUser = (userName, password) => {
   const user = new Users({
     userName,

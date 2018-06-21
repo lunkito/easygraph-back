@@ -5,7 +5,6 @@ export const router = express.Router();
 
 // GET --------------------------------
 router.get('/:token', (req, res) => {
-  console.log('req', req);
   controller.getGraphs(req.params.token)
     .then(graph => res.json(graph))
     .catch(err => res.status(500).send(err));

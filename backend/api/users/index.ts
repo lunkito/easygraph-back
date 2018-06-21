@@ -30,7 +30,15 @@ router.post('/login', (req, res) => {
   controller.login(req.body)
     .then((user) => {
       res.json(user);
-     })
+    })
+    .catch(err => res.status(404).send(`Error en el login: ${err}`));
+});
+
+router.post('/logout', (req, res) => {
+  controller.logout(req.body)
+    .then((user) => {
+      res.json(user);
+    })
     .catch(err => res.status(404).send(err));
 });
 
