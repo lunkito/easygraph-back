@@ -10,7 +10,7 @@
     "tsdev": "nodemon --watch '**/*.ts' --exec ts-node backend/server.ts",
     "pro": "ts-node backend/server.ts",
     "start": "node dist/server.js",
-	 "launch": "forever start ts-node backend/server.ts"
+	 "launch": "forever start -c ts-node backend/server.ts"
   },
   "keywords": [],
   "author": "Pablo",
