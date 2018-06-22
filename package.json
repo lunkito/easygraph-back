@@ -8,7 +8,9 @@
     "build": "webpack",
     "dev": "webpack-dev-server --mode development",
     "tsdev": "nodemon --watch '**/*.ts' --exec ts-node backend/server.ts",
-    "start": "node dist/server.js"
+    "pro": "ts-node backend/server.ts",
+    "start": "node dist/server.js",
+	 "launch": "forever start ts-node backend/server.ts"
   },
   "keywords": [],
   "author": "Pablo",
