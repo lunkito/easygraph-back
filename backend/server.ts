@@ -20,6 +20,6 @@ connect(MONGO_URL);
 
 app.use('/graphs', graphsRouter.router);
 app.use('/users', usersRouter.router);
-app.get('/', (req, res)=> { res.send('Hello!')});
+app.get('/', (req, res) => { res.send('Hello!'); });
 
 app.listen('3000', () => console.log('App listening on port 3000'));
